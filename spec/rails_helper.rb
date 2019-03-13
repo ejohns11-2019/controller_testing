@@ -6,6 +6,8 @@ require File.expand_path('../../config/environment', __FILE__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
 require 'simplecov'
+require "devise"
+require "support/controller_macros"
 SimpleCov.start
 
 Shoulda::Matchers.configure do |config|
@@ -21,8 +23,7 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
 end
 
-require 'devise'
-require 'support/controller_macros'
+
 
 # Add additional requires below this line. Rails is not loaded until this point!
 
@@ -50,6 +51,10 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 RSpec.configure do |config|
+
+  config.include Devise::Test::ControllerHelpers, type: :controller
+  config.extend ControllerMacros, type: :controller
+
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)

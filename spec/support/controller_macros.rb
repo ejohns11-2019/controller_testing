@@ -1,5 +1,4 @@
-module ControllerMacros #because of devise
-  #before all tests need a user to be logged in
+module ControllerMacros
   def login_user
     before(:each) do
       @request.env["devise.mapping"] = Devise.mappings[:user]
@@ -9,9 +8,8 @@ module ControllerMacros #because of devise
         first_name: 'Test',
         last_name: 'Tester',
         age: 28
-      ) #this creates a user
-      sign_in @user #this signs the user in
+      )
+      sign_in @user
     end
   end
-
 end
